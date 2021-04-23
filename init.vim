@@ -5,7 +5,8 @@ set noerrorbells
 set tabstop=2 softtabstop=2
 set shiftwidth=2
 set expandtab
-set nu rnu
+set nu
+set norelativenumber
 set ignorecase
 set smartindent
 set smartcase
@@ -18,7 +19,7 @@ set scrolloff=8
 " set signcolumn=yes
 
 set colorcolumn=80
-highlight ColorColumn ctermbg=darkgrey guibg=darkgrey
+" highlight ColorColumn ctermbg=darkgrey guibg=darkgrey
 call plug#begin('~/.vim/plugged')
 Plug 'jremmen/vim-ripgrep'
 Plug 'tpope/vim-fugitive'
@@ -34,11 +35,15 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
-" Plug 'git@github.com:easymotion/vim-easymotion'
+Plug 'git@github.com:easymotion/vim-easymotion'
 Plug 'chriskempson/base16-vim'
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzy-native.nvim'
 call plug#end()
 
-let base16colorspace=256
+" let base16colorspace=256
 source ~/.vimrc_background
 
 let g:auto_save = 1
@@ -100,15 +105,30 @@ endif
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-staging']
 let mapleader = " "
 
-autocmd WinLeave * wshada
-autocmd WinEnter * rshada
-
 nnoremap <leader>h :wincmd h<CR>
 nnoremap <leader>ps :Rg<SPACE>
 nnoremap <leader>wk :wincmd k<CR>
 nnoremap <leader>wj :wincmd j<CR>
 nnoremap <leader>wh :wincmd h<CR>
 nnoremap <leader>wl :wincmd l<CR>
+map <Leader> <Plug>(easymotion-prefix)
 " nmap <silent> gd <Plug>(lcn-definition)
 " nmap <silent> gc <Plug>(lcn-menu)
 " nnoremap z :call LanguageClient_contextMenu()<CR>
+
+lua << EOF
+require('telescope').setup {
+  defaults = {
+    file_sorter = require('telescope.sorters').get_fzy_sorter
+  },
+  extensions = {
+    fzy_native = {
+      override_generic_sorter = false,
+      override_file_sorter = true,
+    }
+  }
+}
+
+require('telescope').load_extension('fzy_native')
+EOF
+
