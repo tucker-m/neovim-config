@@ -41,8 +41,8 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
-Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
-Plug 'kyazdani42/nvim-web-devicons' " lua
+Plug 'hoob3rt/lualine.nvim'
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
 " let base16colorspace=256
@@ -67,6 +67,17 @@ EOF
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 set foldlevel=99
+
+lua << EOF
+require('lualine').setup{
+  options = {
+    theme = 'gruvbox'
+  },
+  sections = {
+    lualine_a = { {'mode', upper = true} },
+  }
+}
+EOF
 
 lua require('lspconfig').tsserver.setup{ on_attach=require('completion').on_attach }
 set completeopt=menuone,noinsert,noselect
@@ -134,39 +145,3 @@ require('telescope').setup {
 require('telescope').load_extension('fzy_native')
 EOF
 
-
-lua << EOF
-local galaxyline = require('galaxyline')
-local colors = require('galaxyline.colors')
-local vcs = require('galaxyline.provider_vcs')
-galaxyline.section.left[1]= {
-  FileName = {
-    provider = 'FileName',
-    separator = '| ',
-  },
-}
-galaxyline.section.left[2]= {
-  GitBranch = {
-    provider = 'GitBranch',
-    separator = ':',
-    separator_highlight = {colors.green, colors.purple},
-  }
-}
-galaxyline.section.left[3] = {
-  DiffAdd = {
-    provider = 'DiffAdd',
-  },
-  DiffRemove = {
-    provider = 'DiffRemove'
-  },
-  DiffModified = {
-    provider = 'DiffModified'
-  }
-}
-  
-galaxyline.section.right[1] = {
-  LinePercent = {
-    provider = 'LinePercent'
-  }
-}
-EOF
