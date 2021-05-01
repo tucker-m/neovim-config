@@ -16,7 +16,7 @@ set undodir=~/.vim/undodir
 set undofile
 set incsearch
 set scrolloff=8
-" set signcolumn=yes
+set signcolumn=no
 
 set colorcolumn=80
 " highlight ColorColumn ctermbg=darkgrey guibg=darkgrey
@@ -90,7 +90,11 @@ lspconfig.sample.setup{
   root_dir = lspconfig.util.root_pattern('.git');
 }
 
-vim.lsp.set_log_level("debug")
+lspconfig.solargraph.setup{
+  on_attach = require('completion').on_attach;
+}
+
+vim.lsp.set_log_level("error")
 EOF
   
 set hidden
