@@ -73,6 +73,7 @@ set foldexpr=nvim_treesitter#foldexpr()
 set foldlevel=99
 
 lua require('lspconfig').tsserver.setup{ on_attach=require('completion').on_attach }
+lua require'lspconfig'.phpactor.setup{ on_attach=require('completion').on_attach }
 set completeopt=menuone,noinsert,noselect
 let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
 let g:completion_matching_ignore_case = 1
@@ -120,6 +121,11 @@ nnoremap <leader>wk :wincmd k<CR>
 nnoremap <leader>wj :wincmd j<CR>
 nnoremap <leader>wh :wincmd h<CR>
 nnoremap <leader>wl :wincmd l<CR>
+nnoremap <leader>f <cmd>Telescope find_files<CR>
+nnoremap <leader>g <cmd>Telescope git_files<CR>
+nnoremap <leader>e <cmd>Telescope file_browser<CR>
+nnoremap <leader>r <cmd>Telescope live_grep<CR>
+nnoremap <leader>b <cmd>Telescope buffers<CR>
 nmap <leader>s <Plug>(easymotion-s)
 
 lua << EOF
