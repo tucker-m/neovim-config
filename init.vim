@@ -1,5 +1,4 @@
 syntax enable
-" set background=dark
 
 set noerrorbells
 set tabstop=2 softtabstop=2
@@ -16,10 +15,9 @@ set undodir=~/.vim/undodir
 set undofile
 set incsearch
 set scrolloff=8
-" set signcolumn=yes
+set signcolumn=no
 
 set colorcolumn=80
-" highlight ColorColumn ctermbg=darkgrey guibg=darkgrey
 call plug#begin('~/.vim/plugged')
 Plug 'jremmen/vim-ripgrep'
 Plug 'tpope/vim-fugitive'
@@ -41,17 +39,23 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
-Plug 'hoob3rt/lualine.nvim'
-Plug 'ryanoasis/vim-devicons'
+Plug 'mhinz/vim-signify'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'folke/which-key.nvim'
 call plug#end()
 
 " let base16colorspace=256
 source ~/.vimrc_background
 
+let g:signify_sign_show_text = 1
+let g:airline#extensions#fugitiveline#enabled = 1
+let g:airline#extensions#hunks#enabled = 1
+let g:airline#extensions#tabline#enabled = 1
 let g:auto_save = 1
-
+let g:airline_theme='lessnoise'
 let g:gundo_prefer_python3 = 1
-" let g:gundo_preview_bottom = 1
+let g:gundo_preview_bottom = 1
 
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
@@ -67,17 +71,6 @@ EOF
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 set foldlevel=99
-
-lua << EOF
-require('lualine').setup{
-  options = {
-    theme = 'gruvbox'
-  },
-  sections = {
-    lualine_a = { {'mode', upper = true} },
-  }
-}
-EOF
 
 lua require('lspconfig').tsserver.setup{ on_attach=require('completion').on_attach }
 set completeopt=menuone,noinsert,noselect
@@ -104,6 +97,9 @@ lspconfig.sample.setup{
 }
 
 vim.lsp.set_log_level("debug")
+
+require("which-key").setup {
+}
 EOF
   
 set hidden
@@ -124,10 +120,7 @@ nnoremap <leader>wk :wincmd k<CR>
 nnoremap <leader>wj :wincmd j<CR>
 nnoremap <leader>wh :wincmd h<CR>
 nnoremap <leader>wl :wincmd l<CR>
-map <Leader> <Plug>(easymotion-prefix)
-" nmap <silent> gd <Plug>(lcn-definition)
-" nmap <silent> gc <Plug>(lcn-menu)
-" nnoremap z :call LanguageClient_contextMenu()<CR>
+nmap <leader>s <Plug>(easymotion-s)
 
 lua << EOF
 require('telescope').setup {
