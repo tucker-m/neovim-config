@@ -72,30 +72,29 @@ set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 set foldlevel=99
 
-lua require('lspconfig').tsserver.setup{ on_attach=require('completion').on_attach }
-lua require'lspconfig'.phpactor.setup{ on_attach=require('completion').on_attach }
 set completeopt=menuone,noinsert,noselect
 let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
 let g:completion_matching_ignore_case = 1
 lua << EOF
 local lspconfig = require'lspconfig'
 local configs = require'lspconfig/configs'
-if not lspconfig.sample then
-  configs.sample = {
-    default_config = {
-      cmd = {'node', '/Users/tmcknight/repos/vscode-extension-samples/lsp-sample/server/out/server.js', '--node-ipc'};
-      filetypes = {'markdown', 'text'};
-      root_dir = lspconfig.util.root_pattern('.git');
-      settings = {};
-    };
-  }
-end
-lspconfig.sample.setup{
-  filetypes = { 'text', 'markdown' };
-  cmd = {'node', '/Users/tmcknight/repos/vscode-extension-samples/lsp-sample/server/out/server.js', '--stdio'};
-  on_attach = require('completion').on_attach;
-  root_dir = lspconfig.util.root_pattern('.git');
-}
+-- if not lspconfig.sample then
+--   configs.sample = {
+--     default_config = {
+--       cmd = {'node', '/Users/tmcknight/repos/vscode-extension-samples/lsp-sample/server/out/server.js', '--stdio'};
+--       filetypes = {'markdown', 'text'};
+--       root_dir = lspconfig.util.root_pattern('.git');
+--       settings = {};
+--     };
+--   }
+-- end
+-- 
+-- lspconfig.sample.setup{
+--   on_attach = require('completion').on_attach;
+-- }
+
+lspconfig.tsserver.setup{ on_attach=require('completion').on_attach }
+lspconfig.phpactor.setup{ on_attach=require('completion').on_attach }
 
 lspconfig.solargraph.setup{
   on_attach = require('completion').on_attach;
@@ -121,16 +120,24 @@ let mapleader = " "
 
 nnoremap <leader>h :wincmd h<CR>
 nnoremap <leader>ps :Rg<SPACE>
-nnoremap <leader>wk :wincmd k<CR>
-nnoremap <leader>wj :wincmd j<CR>
-nnoremap <leader>wh :wincmd h<CR>
-nnoremap <leader>wl :wincmd l<CR>
-nnoremap <leader>f <cmd>Telescope find_files<CR>
-nnoremap <leader>g <cmd>Telescope git_files<CR>
-nnoremap <leader>e <cmd>Telescope file_browser<CR>
+nnoremap <leader>k :wincmd k<CR>
+nnoremap <leader>j :wincmd j<CR>
+nnoremap <leader>h :wincmd h<CR>
+nnoremap <leader>l :wincmd l<CR>
+nnoremap <leader>ws :split<bar>wincmd j<CR>
+nnoremap <leader>wv :vsplit<bar>wincmd l<CR>
+nnoremap <leader>f :Files<CR>
+nnoremap <leader>g :GFiles<CR>
+nnoremap <leader>G <cmd>Telescope git_files<CR>
+nnoremap <leader>F <cmd>Telescope find_files<CR>
+nnoremap <leader>E <cmd>Telescope file_browser<CR>
+nnoremap <leader>e :Ex<CR>
 nnoremap <leader>r <cmd>Telescope live_grep<CR>
-nnoremap <leader>b <cmd>Telescope buffers<CR>
+nnoremap <leader>b :Windows<CR>
+nnoremap <leader>B :Buffers<CR>
 nmap <leader>s <Plug>(easymotion-s)
+nnoremap <leader>t :tabnew<CR>
+nnoremap <leader>T :tabnew<bar>te<CR>
 
 lua << EOF
 require('telescope').setup {
